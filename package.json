@@ -1,0 +1,24 @@
+{
+  "name": "@kibocommerce/headless-logs-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./bin/index.js",
+  "repository": {
+    "url": "https://www.npmjs.com/package/@kibocommerce/headless-logs-cli",
+    "type": "git"
+  },
+  "type": "module",
+  "bin": {
+    "kibo-headless-logs": "./bin/index.js"
+  },
+  "author": "",
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@kibocommerce/sdk-authentication": "^1.0.1",
+    "commander": "^12.1.0",
+    "node-jq": "^6.0.1"
+  }
+}
