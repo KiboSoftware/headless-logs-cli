@@ -22,10 +22,10 @@ export default class LogService {
     async fetchRuntimeLogBatch(prefix=null, maxResults=500, nextToken=null){
         await this._authClient.getAccessToken()
         const paramStr = `prefix=${prefix ?? ''}&maxResults=${maxResults}&nextToken=${nextToken ?? ''}`
-        const requestOpt = { 
-            method: 'GET', 
-            headers: { 
-                'Authorization': `Bearer ${this.authTicket}`,
+        const requestOpt = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this.authTicket.access_token}`,
                 'x-vol-tenant': this._tenant,
                 'x-vol-site': this._site
             }
@@ -48,4 +48,35 @@ export default class LogService {
         }
         return results
     }
+    async fetchBuildJobs(branch){
+        await this._authClient.getAccessToken()
+        const requestOpt = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this.authTicket.access_token}`,
+                'x-vol-tenant': this._tenant,
+                'x-vol-site': this._site
+            }
+        }
+        const url = `https://${this._homeHost}/api/platform/appdev/headless-app/builds/${branch}`
+        const response = await fetch(url,requestOpt)
+        const json = await response.json()
+        return json
+    }
+    async fetchBuildJobLog(branch, jobId){
+        await this._authClient.getAccessToken()
+        const requestOpt = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this.authTicket.access_token}`,
+                'x-vol-tenant': this._tenant,
+                'x-vol-site': this._site
+            }
+        }
+        const url = `https://${this._homeHost}/api/platform/appdev/headless-app/builds/${branch}/logs/${jobId}`
+        const response = await fetch(url,requestOpt)
+        const json = await response.json()
+        return json
+    }
 }
+

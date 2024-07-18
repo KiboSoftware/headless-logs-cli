@@ -44,7 +44,7 @@ async function formatLogs(logContents=[]) {
 export default async function exportRuntimeLogs(options) {
     try {
         const outputFile = resolve(options.output)
-        const { prefix } = options    
+        const { prefix } = options
         console.log('fetching log entries...')
         const logService = new LogService(options)
         const logs = await logService.fetchRuntimeLogs(prefix)
@@ -59,7 +59,7 @@ export default async function exportRuntimeLogs(options) {
         console.log(`writing log data to ${outputFile}`)
         await writeFile(outputFile, combinedLogNDJson, 'utf8')
         console.log(`Combined logs written to ${outputFile}`);
-    
+
     } catch (error) {
         console.error(`Error: ${error.message}`);
     }
