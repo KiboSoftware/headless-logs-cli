@@ -8,6 +8,8 @@ NodeJS CLI to download and extract build and runtime logs from your Kibo hosted 
 * Kibo Site ID
 * Kibo Application Key (Client ID )
 * Kibo Shared Secret (Client Secret)
+* Node >= 18
+
 
 ## Installation
 
