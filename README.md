@@ -53,5 +53,5 @@ kibo-headless-logs get-build-logs --output buildlogs --tenant 1234 --site 1234 -
 
 shorthand;
 ```bash
-kibo-headless-logs get-build-logs --o buildlogs --t 1234 --s 1234 --a AppKey --k Secret --b kibo-sb-main --n 3 --h t1234-s1234.sandbox.mozu.com
+kibo-headless-logs gbl --o buildlogs --t 1234 --s 1234 --a AppKey --k Secret --b kibo-sb-main --n 3 --h t1234-s1234.sandbox.mozu.com
 ```
