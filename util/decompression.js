@@ -2,7 +2,7 @@ import zlib from 'zlib';
 
 // Byte sequence that indicates the start of a gzip file
 const GZIP_MAGIC = Buffer.from([0x1f, 0x8b]);
-export function splitGzipAndExtractContents(incomingBuffer, logContents) {
+export function splitGzipAndExtractContents(incomingBuffer, logContents=[]) {
     const data = Buffer.from(incomingBuffer);
     // Find all positions where gzip files start
     const positions = [];
@@ -21,4 +21,5 @@ export function splitGzipAndExtractContents(incomingBuffer, logContents) {
             logContents.push(stringData);
         } catch (err) { }
     });
+    return logContents;
 }
