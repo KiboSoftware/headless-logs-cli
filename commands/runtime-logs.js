@@ -118,11 +118,11 @@ function getOutFilePath(options) {
 export default async function exportRuntimeLogs(options) {
     try {
         const outputFile = getOutFilePath(options)
-        const { prefix } = options
-        console.log('fetching log groups...')
+        const { prefix, cutoff, maxentries } = options
+        console.log('fetching log entries...')
         const logService = new LogService(options)
-        const logs = await logService.fetchRuntimeLogs(prefix)
-        if (!logs.length) {
+        const logs = await logService.fetchRuntimeLogs(prefix, maxentries, cutoff)
+        if(!logs.length){
             console.log('no logs found')
             return
         }

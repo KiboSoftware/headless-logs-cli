@@ -64,6 +64,16 @@ kibo-headless-logs rl -p 2024-07-01 -o ./runtime-logs -t 1234, -s 321, -a AppKey
 kibo-headless-logs rl -p 2024-07-01-10 -o ./runtime-logs -t 1234, -s 321, -a AppKey -k Secret
 ```
 
+### Logs By Day/Hour with Maximum Entries 
+```bash
+kibo-headless-logs rl -p 2024-07-01-10 -o ~/log-export.ndjson -t 1234, -s 321, -a AppKey -s Secret --maxentries=3
+```
+
+### Logs By Day/Hour with Cutoff 
+```bash
+kibo-headless-logs rl --prefix=2024-12-10-01 --cutoff=2024-12-10-01-15 -o ~/log-export.ndjson -t 1234, -s 321, -a AppKey -s Secret
+```
+
 ## Build Log Usage
 
 ```bash
