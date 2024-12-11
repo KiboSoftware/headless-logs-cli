@@ -52,7 +52,7 @@ program.command('runtime-logs')
     .option('-f, --output-file <file>', 'Output path for combined logs', 'runtimelogs.ndjson')
     .addOption(new Option('-o, --output <dir>', 'Output directory for logs').env('LOG_DIR'))
     .option('-h, --home-host [home-host]', 'Kibo home host', 'home.mozu.com')
-    .option('-f, --prefix [prefix]', '')
+    .option('-p, --prefix [prefix]', '')
     .option('-c, --cutoff [cutoff]', '')
     .option('-m, --maxentries [maxentries]', 'Maximum number of entries to fetch', (value) => {
         const parsed = parseInt(value, 10);
