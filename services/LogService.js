@@ -34,7 +34,7 @@ export default class LogService {
         const response = await fetch(url,requestOpt)
         return response
     }
-    async fetchRuntimeLogs(prefix=null, maxResults=500, nextToken=null, results=[]) {
+    async fetchRuntimeLogs(prefix=null, maxentries=null, cutoff=null, maxResults=500, nextToken=null, results=[]) {
         const response = await this.fetchRuntimeLogBatch(prefix, maxResults, nextToken)
         if(!response.ok){
             console.error(`error fetching logs, status: ${response.status} prefix: ${prefix} maxResults: ${maxResults} nextToken: ${nextToken}`)
@@ -42,9 +42,34 @@ export default class LogService {
             throw new Error(respTxt)
         }
         const logResponse = await response.json()
-        results.push(...logResponse.logs)
+
+        // If we have a cutoff time, take that into consideration
+        if (cutoff == null) {
+            results.push(...logResponse.logs)
+        } else {
+            let shouldContinue = false
+            for (const log of logResponse.logs) {
+
+                // The key looks like this:  "d1gz5i035kxk7q/2024/12/10/00/client-d1gz5i035kxk7q-logs-delivery-2-2024-12-10-00-09-32-994cd7b9-459c-43ed-8065-c88e266042ed",
+                // We can lop off the end, since the date format and UUID are constant, and then compare to the cutoff
+
+                if (log.key.substring(log.key.length - 56) <= cutoff) {
+                    shouldContinue = true
+                    results.push(log)
+                }
+            }
+            if (!shouldContinue) {
+                return results
+            }
+        }
+
+        // Stop if user has suppied maxentries and we have more logs than that
+        if (maxentries && results.length > maxentries) {
+            return results.slice(0, maxentries)
+        }
+        
         if(logResponse.isTruncated){
-            return this.fetchRuntimeLogs(prefix, maxResults, logResponse.nextToken, results)
+            return this.fetchRuntimeLogs(prefix, maxentries, cutoff, maxResults, logResponse.nextToken, results)
         }
         return results
     }

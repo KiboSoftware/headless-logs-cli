@@ -16,6 +16,14 @@ program.command('runtime-logs')
     .option('-o, --output <file>', 'Output path for combined logs', 'runtimelogs.ndjson')
     .option('-h, --home-host [home-host]', 'Kibo home host', 'home.mozu.com')
     .option('-f, --prefix [prefix]', '')
+    .option('-c, --cutoff [cutoff]', '')
+    .option('-m, --maxentries [maxentries]', 'Maximum number of entries to fetch', (value) => {
+        const parsed = parseInt(value, 10);
+        if (isNaN(parsed)) {
+            throw new Error('maxentries must be a number');
+        }
+        return parsed;
+    })
     .action((options) => exportRuntimeLogs(options))
 
 program.command('get-build-logs')

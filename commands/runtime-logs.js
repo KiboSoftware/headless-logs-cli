@@ -44,10 +44,10 @@ async function formatLogs(logContents=[]) {
 export default async function exportRuntimeLogs(options) {
     try {
         const outputFile = resolve(options.output)
-        const { prefix } = options
+        const { prefix, cutoff, maxentries } = options
         console.log('fetching log entries...')
         const logService = new LogService(options)
-        const logs = await logService.fetchRuntimeLogs(prefix)
+        const logs = await logService.fetchRuntimeLogs(prefix, maxentries, cutoff)
         if(!logs.length){
             console.log('no logs found')
             return
