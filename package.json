@@ -1,6 +1,6 @@
 {
   "name": "@kibocommerce/headless-logs-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./bin/index.js",
   "repository": {
@@ -19,6 +19,7 @@
   "dependencies": {
     "@kibocommerce/sdk-authentication": "^1.0.1",
     "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
     "node-jq": "^6.0.1"
   }
 }
