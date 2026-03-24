@@ -18,6 +18,9 @@ function writeToStream(stream, data) {
 
 function splitLogStreams(content) {
     const chunks = content.split('}{')
+    if (chunks.length === 1) {
+        return chunks;
+    }
     return chunks.map((chunk, idx) => {
         if (idx === 0) {
             return chunk = chunk + '}'
@@ -63,8 +66,8 @@ async function extractLogContent(logs, writeStream, batchSize=4000) {
             const responseData = await response.arrayBuffer()
             await splitGzipAndExtractContents(responseData, logBuffer)
         }
+
         if (logBuffer.length > batchSize) {
-            
             const appendLogBatch = await formatLogs(logBuffer)
             await writeToStream(writeStream, appendLogBatch)
             totalWritten += logBuffer.length
@@ -77,6 +80,7 @@ async function extractLogContent(logs, writeStream, batchSize=4000) {
     if (logBuffer.length > 0) {
         const appendLogBatch = await formatLogs(logBuffer)
         await writeToStream(writeStream, appendLogBatch)
+        totalWritten += logBuffer.length
         logBuffer = []
     }
     process.stdout.clearLine(0);

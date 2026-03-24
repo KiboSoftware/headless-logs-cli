@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command, Option } from 'commander';
 import exportRuntimeLogs from '../commands/runtime-logs.js'
 import getBuildLogs from '../commands/get-build-logs.js';
