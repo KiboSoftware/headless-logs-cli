@@ -8,6 +8,12 @@
     "type": "git"
   },
   "type": "module",
+  "files": [
+    "bin",
+    "commands",
+    "services",
+    "util"
+  ],
   "bin": {
     "kibo-headless": "./bin/index.js",
     "kibo-headless-logs": "./bin/index.js"
