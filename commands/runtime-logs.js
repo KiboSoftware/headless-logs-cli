@@ -6,6 +6,7 @@ import { resolve } from 'path';
 import jq from 'node-jq'
 import LogService from '../services/LogService.js';
 import { splitGzipAndExtractContents } from '../util/decompression.js';
+import { splitConcatenatedJson } from '../util/json-stream.js';
 
 function writeToStream(stream, data) {
     return new Promise((resolve, reject) => {
@@ -16,18 +17,6 @@ function writeToStream(stream, data) {
     });
 }
 
-function splitLogStreams(content) {
-    const chunks = content.split('}{')
-    return chunks.map((chunk, idx) => {
-        if (idx === 0) {
-            return chunk = chunk + '}'
-        }
-        if (idx === chunks.length - 1) {
-            return chunk = '{' + chunk
-        }
-        return chunk = '{' + chunk + '}'
-    })
-}
 async function extractStandardGzip(log, logContents=[]) {
     const response = await fetch(log.logUrl);
     if (!response.ok) {
@@ -41,7 +30,7 @@ async function extractStandardGzip(log, logContents=[]) {
         chunks.push(chunk);
     }
     const content = Buffer.concat(chunks).toString()
-    logContents.push(...splitLogStreams(content))
+    logContents.push(...splitConcatenatedJson(content))
     return logContents
 }
 
@@ -69,18 +58,23 @@ async function extractLogContent(logs, writeStream, batchSize=4000) {
             await writeToStream(writeStream, appendLogBatch)
             totalWritten += logBuffer.length
             logBuffer = []
-            process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);
-            process.stdout.write(`total log events written: ${totalWritten}, ${Math.floor(((i / logs.length)) * 100)}% complete`);
+            if (process.stdout.isTTY) {
+                process.stdout.clearLine(0);
+                process.stdout.cursorTo(0);
+            }
+            process.stdout.write(`total log events written: ${totalWritten}, ${Math.floor(((i / logs.length)) * 100)}% complete\n`);
         }
     }
     if (logBuffer.length > 0) {
         const appendLogBatch = await formatLogs(logBuffer)
         await writeToStream(writeStream, appendLogBatch)
+        totalWritten += logBuffer.length
         logBuffer = []
     }
-    process.stdout.clearLine(0);
-    process.stdout.cursorTo(0);
+    if (process.stdout.isTTY) {
+        process.stdout.clearLine(0);
+        process.stdout.cursorTo(0);
+    }
     process.stdout.write(`total log events written: ${totalWritten}, 100% complete\n`);
     return
 }
@@ -142,6 +136,7 @@ export default async function exportRuntimeLogs(options) {
         // const combinedLogNDJson = await formatLogs(logContents)
         // await writeFile(outputFile, combinedLogNDJson, 'utf8')
     } catch (error) {
-        console.error(`Error: ${error.message}`);
+        process.stderr.write(`Error: ${error.message}\n`);
+        process.exitCode = 1;
     }
 }
