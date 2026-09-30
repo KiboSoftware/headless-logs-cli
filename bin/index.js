@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command, Option } from 'commander';
 import exportRuntimeLogs from '../commands/runtime-logs.js'
 import getBuildLogs from '../commands/get-build-logs.js';
@@ -15,7 +16,7 @@ const invoked = path.basename(process.argv[1] || 'kibo-headless');
 program.name(invoked);
 
 program
-    .version('3.0.0')
+    .version('3.0.1')
     .description('Kibo Headless CLI — manage env vars, secrets, builds, and logs')
 
 program.command('init')
