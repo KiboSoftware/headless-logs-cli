@@ -1,6 +1,6 @@
 {
   "name": "@kibocommerce/headless-cli",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Kibo Headless CLI — manage env vars, secrets, builds, and logs",
   "main": "./bin/index.js",
   "repository": {

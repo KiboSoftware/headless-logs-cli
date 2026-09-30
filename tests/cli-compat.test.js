@@ -11,6 +11,13 @@ describe('CLI backward compatibility', () => {
     assert.strictEqual(pkg.bin['kibo-headless'], pkg.bin['kibo-headless-logs']);
   });
 
+  it('bin/index.js has a node shebang so the bin shim runs under node', () => {
+    // Without it, `kibo-headless ...` executes as a shell script and fails with
+    // "import: command not found". Regression test for the missing-shebang bug.
+    const src = readFileSync(resolve(import.meta.dirname, '../bin/index.js'), 'utf-8');
+    assert.ok(src.startsWith('#!/usr/bin/env node'), 'bin/index.js must start with #!/usr/bin/env node');
+  });
+
   it('existing commands are still registered', async () => {
     // We can verify by importing and checking Commander structure
     const { execSync } = await import('node:child_process');
