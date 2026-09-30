@@ -1,4 +1,5 @@
 import zlib from 'zlib';
+import { splitConcatenatedJson } from './json-stream.js';
 
 // Byte sequence that indicates the start of a gzip file
 const GZIP_MAGIC = Buffer.from([0x1f, 0x8b]);
@@ -18,7 +19,7 @@ export function splitGzipAndExtractContents(incomingBuffer, logContents=[]) {
         try {
             const decompressedData = zlib.gunzipSync(partData);
             const stringData = decompressedData.toString('utf-8');
-            logContents.push(stringData);
+            logContents.push(...splitConcatenatedJson(stringData));
         } catch (err) { }
     });
     return logContents;

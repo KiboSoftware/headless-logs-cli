@@ -1,15 +1,25 @@
 {
-  "name": "@kibocommerce/headless-logs-cli",
-  "version": "1.0.1",
-  "description": "",
+  "name": "@kibocommerce/headless-cli",
+  "version": "3.0.0",
+  "description": "Kibo Headless CLI — manage env vars, secrets, builds, and logs",
   "main": "./bin/index.js",
   "repository": {
-    "url": "https://www.npmjs.com/package/@kibocommerce/headless-logs-cli",
+    "url": "https://www.npmjs.com/package/@kibocommerce/headless-cli",
     "type": "git"
   },
   "type": "module",
+  "files": [
+    "bin",
+    "commands",
+    "services",
+    "util"
+  ],
   "bin": {
+    "kibo-headless": "./bin/index.js",
     "kibo-headless-logs": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "node --test"
   },
   "author": "",
   "engines": {

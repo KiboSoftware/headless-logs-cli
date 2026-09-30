@@ -41,6 +41,7 @@ export default async function getBuildLogs(options) {
         }
       }
     } catch (error) {
-        console.error(`Error: ${error.message}`);
+        process.stderr.write(`Error: ${error.message}\n`);
+        process.exitCode = 1;
     }
 }
